@@ -1,13 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-
-typedef struct Node {
-    int data;
-    struct Node *left;
-    struct Node *right;
-
-} Node;
-
+#include "queue.h"
+#include "tree.h"
 
 void insertNode(Node **tree, int val) {
     Node* temp = NULL;
@@ -78,34 +72,44 @@ void printpostorder(Node *tree) {
     }  
 }
 
-void print_levelorder(Node *tree) {
-    if (tree)
+void printLevelorder(Node *tree) {
+    if (!tree) return;
+    Queue *queue = createQueue(100);
+    enqueue(queue, tree);
+    while (!isEmpty(queue))
     {
-        printf("%d", tree->data);
-        print_levelorder(tree->left);
-        print_levelorder(tree->right);
+        Node *current = dequeue(queue);
+        printf("%d ", current->data);
+        if (current->left)
+        {
+            enqueue(queue, current->left);
+        }
+        if (current->right)
+        {
+            enqueue(queue, current->right);
+        }
     }
+    freeQueue(queue);
 }
 
 int main(void) {
     Node* root;
     root = NULL;
-    insertNode(&root, 1);
+    insertNode(&root, 4);
     insertNode(&root, 2);
+    insertNode(&root, 6);
+    insertNode(&root, 1);
     insertNode(&root, 3);
-    // insertNode(&root, 10);
-    // insertNode(&root, 12);
     insertNode(&root, 5);
+    insertNode(&root, 7);
     printPreorder(root);
     printf("\n");
     printInorder(root);
     printf("\n");
     printpostorder(root);
-    Node* subtree = searchtree(&root, 3);
-    deltree(subtree);
+  
     printf("\n");
-    insertNode(&root, 6);
-    printPreorder(root);
+    printLevelorder(root);
 
     return 0;
 }
