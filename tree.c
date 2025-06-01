@@ -92,6 +92,33 @@ void printLevelorder(Node *tree) {
     freeQueue(queue);
 }
 
+int checkCompleteBinaryTree(Node *tree) {
+    if (!tree) return 0;
+    Queue *queue = createQueue(100);
+    enqueue(queue, tree);
+    int flag = 0;
+    while (!isEmpty(queue))
+    {
+        Node *current = dequeue(queue);
+        if (current->left)
+        {
+            if (flag == 1) return 0;
+            enqueue(queue, current->left);
+        } else {
+            flag = 1;
+        }
+        if (current->right)
+        {
+            if (flag == 1)  return 0;
+            enqueue(queue, current->right);
+        } else {
+            flag = 1;
+        }
+    }
+    freeQueue(queue);
+    return 1;
+}
+
 int main(void) {
     Node* root;
     root = NULL;
@@ -110,6 +137,13 @@ int main(void) {
   
     printf("\n");
     printLevelorder(root);
-
+    int res = checkCompleteBinaryTree(root);
+    printf("\n");
+    if (res == 0)
+    {
+        printf("No");
+    } else {
+        printf("Yes");
+    }
     return 0;
 }
