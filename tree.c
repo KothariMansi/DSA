@@ -29,6 +29,54 @@ void deltree(Node *tree) {
     }
 }
 
+void helper(Node **tree, Node **NodeAdd){
+    if (!(*tree))  {
+        tree = NodeAdd;
+        return;
+    }
+    if ((*NodeAdd)->data < (*tree)->data) {
+        helper(&(*tree)->left, NodeAdd);
+    }
+    if ((*NodeAdd)->data > (*tree)->data) {
+        helper(&(*tree)->right, NodeAdd);
+    }
+}
+
+
+Node* findMin(Node *root) {
+    if (root->left != NULL) {
+        return findMin(root->left);
+    } else {
+        return root;
+    }
+}
+
+Node* delNode(Node *root, int val) {
+    if (root == NULL) return NULL;
+    else {
+        if (val < root->data) {
+            root->left = delNode(root->left, val); 
+        }  else if (val > root->data)  {
+            root->right = delNode(root->right, val);
+        }  else {
+            // 4 conditions
+            if (root->left == NULL && root->right==NULL) {
+                root = NULL;
+            } else if (root->left == NULL){
+                root = root->right;
+            } else if (root->right == NULL) {
+                root = root->left;
+            } else {
+                Node* temp = findMin(root->right);
+                root->data = temp->data;
+                root->right = delNode(root->right, temp->data);
+            } 
+        } 
+        return root;
+    }
+}
+
+
 Node* searchtree(Node **tree, int val) {
     if (!(*tree))
     {
@@ -36,11 +84,9 @@ Node* searchtree(Node **tree, int val) {
     }
     if (val < (*tree)->data) {
         searchtree(&(*tree)->left, val);
-    } else if (val > (*tree)->data)
-    {
+    } else if (val > (*tree)->data){
         searchtree(&(*tree)->right, val);
-    } else if (val == (*tree)->data)
-    {
+    } else if (val == (*tree)->data){
         return *tree;
     }
 }
@@ -145,5 +191,9 @@ int main(void) {
     } else {
         printf("Yes");
     }
+    printf("\n");
+    delNode(root, 2);
+    printInorder(root);
+
     return 0;
 }
