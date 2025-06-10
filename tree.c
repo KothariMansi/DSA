@@ -29,19 +29,6 @@ void deltree(Node *tree) {
     }
 }
 
-void helper(Node **tree, Node **NodeAdd){
-    if (!(*tree))  {
-        tree = NodeAdd;
-        return;
-    }
-    if ((*NodeAdd)->data < (*tree)->data) {
-        helper(&(*tree)->left, NodeAdd);
-    }
-    if ((*NodeAdd)->data > (*tree)->data) {
-        helper(&(*tree)->right, NodeAdd);
-    }
-}
-
 
 Node* findMin(Node *root) {
     if (root->left != NULL) {

@@ -61,5 +61,4 @@ void main() {
     while (!isEmpty(&stack)) {
         pop(&stack);
     }
-
 }
