@@ -61,6 +61,47 @@ void addEdge(struct Graph *graph, int src, int dest) {
     graph->array[dest].head = newNode;
 }
 
+// Delete Edge in Graph
+void deleteEdge(struct Graph *graph, int src, int dest) {
+    // Delete an edge from src to dest
+    struct AdjListNode* temp = graph->array[src].head;
+    struct AdjListNode* prev = NULL;
+    while (temp != NULL && temp->dest != dest)
+    {
+       prev = temp;
+       temp = temp->next;
+    }
+    if (temp != NULL)
+    {
+        if (prev != NULL)
+        {
+            prev->next = temp->next;
+        } else {
+            graph->array[src].head = temp->next; // Null if no element after or the next value if element exist
+        }
+        free(temp);
+    }
+
+    // Delete a edge from dest to src
+    temp = graph->array[dest].head;
+    prev = NULL;
+    while (temp != NULL && temp->dest != src)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp != NULL)
+    {
+        if (prev != NULL)
+        {
+            prev->next = temp->next;
+        } else {
+            graph->array[dest].head = temp->next; // Null if no element after or the next value if element exist
+        }
+        free(temp);
+    }
+}
+
 // Function to perform BFS traversal
 // Use Queue data structure to perofmr BFS
 // Create a visited array
@@ -97,6 +138,7 @@ void BFS(struct Graph *graph, int startVertex) {
     }
     free(queue);
     free(visited);
+    printf("\n");
 }
 
 // A utility function use by DFS
@@ -124,6 +166,7 @@ void DFS(struct Graph *graph, int startVertex) {
     }
     DFSUtil(startVertex, visited, graph);
     free(visited);   
+    printf("\n");
 }
 
 int main() {
@@ -136,7 +179,9 @@ int main() {
     addEdge(graph, 4, 5);
     addEdge(graph, 4, 6);
     BFS(graph, 1);
-    printf("\n");
     DFS(graph, 0);
-    printf("\nDone ");
+    deleteEdge(graph, 4, 6);
+    DFS(graph, 0);
+    BFS(graph, 1);
+    printf("Done ");
 }
