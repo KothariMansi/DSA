@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef DISJOINTSET_H
+#define DISJOINTSET_H
 
 // structure to represent the disjoint set
 typedef struct DisjointSet
@@ -30,7 +32,7 @@ DisjointSet* createDisjointSet(int n) {
 
     ds->n = n;
 
-    for (int i = 0; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
         ds->parent[i] = i;
         ds->rank[i] = 0;
@@ -75,24 +77,4 @@ void unionSet(DisjointSet *ds, int u, int v) {
         ds->rank[pu]++;
     }
 }
-
-
-int main() {
-    int n = 7;
-    DisjointSet *ds = createDisjointSet(n+1);
-    unionSet(ds, 1, 2);
-    unionSet(ds, 2, 3);
-    unionSet(ds, 4, 5);
-    unionSet(ds, 6, 7);
-    int p1 = findParent(ds, 1);
-    int p7 = findParent(ds, 7);
-    printf("%d and  %d belong to same set? = %s", 1, 7, p1 == p7 ? "Yes": "No");
-    printf("\n");
-    unionSet(ds, 5, 6);
-    unionSet(ds, 3, 7);
-    p1 = findParent(ds, 1);
-    p7 = findParent(ds, 7);
-    printf("%d and  %d belong to same set? = %s", 1, 7, p1 == p7 ? "Yes": "No");
-
-    return 0;
-}
+#endif
